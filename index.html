@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>game of life</title>
+
+  <style type="text/css">
+    canvas {
+      display: block;
+      border: solid 1px black;
+      margin: auto;
+    }
+
+    .btn-group {
+      padding: 1em;
+      text-align: center;
+    }
+
+  </style>
+  <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+</head>
+<body>
+
+<canvas width="600" height="300"></canvas>
+
+<div class="btn-group">
+  <button id="start">Start</button>
+  <button id="stop">Stop</button>
+</div>
+
+<script type="text/javascript">
+(function () {
+  let canvas = document.querySelector("canvas")
+  let ctx = canvas.getContext("2d")
+  let start = document.querySelector("#start")
+  let stop = document.querySelector("#stop")
+  let socket = io()
+
+  socket.on("draw", (cells) => {
+    ctx.fillStyle = "black"
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    cells.forEach(([x, y]) => {
+      ctx.fillRect(x * 15 + 1, y * 15 + 1, 13, 13)
+    })
+  })
+
+  start.onclick = () => socket.emit("start")
+  stop.onclick = () => socket.emit("stop")
+  canvas.onclick = (ev) => {
+    let x = Math.floor(ev.offsetX * 40 / canvas.width)
+    let y = Math.floor(ev.offsetY * 20 / canvas.height)
+    socket.emit("set_cell", [x, y])
+  }
+})()
+</script>
+
+</body>
+</html>
