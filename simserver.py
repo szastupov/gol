@@ -1,5 +1,6 @@
 import asyncio
 import socketio
+import webbrowser
 from aiohttp import web
 from life import life
 
@@ -51,4 +52,5 @@ sio.attach(app)
 sio.register_namespace(Simulator())
 
 if __name__ == '__main__':
+    webbrowser.open("http://0.0.0.0:8080")
     web.run_app(app)

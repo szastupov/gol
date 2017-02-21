@@ -17,7 +17,7 @@ def life(cells, w=40, h=20):
             (x, y-1),
             (x+1, y-1)
         ]
-        count = len([pos for pos in coords if pos in cells])
+        count = sum(1 for pos in coords if pos in cells)
         if cell in cells:
             return 2 <= count <= 3
         else:
